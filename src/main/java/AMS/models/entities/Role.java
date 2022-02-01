@@ -4,8 +4,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.util.Objects;
 
@@ -28,8 +26,16 @@ public class Role {
         return new Role("MANAGER", 2L);
     }
 
-    public static Role user(){
-        return new Role("USER", 1L);
+    public static Role customer(){
+        return new Role("CUSTOMER", 1L);
+    }
+
+    public boolean isCustomer(){
+        return name.equals("CUSTOMER");
+    }
+
+    public boolean isManager(){
+        return name.equals("MANAGER");
     }
 
     @Override

@@ -18,7 +18,7 @@ public class Account {
     private Long CustomerId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "Customer_Id", updatable = false, insertable = false)
+    @JoinColumn(name = "Customer_Id", insertable = false, updatable = false)
     private Customer customer;
 
 }

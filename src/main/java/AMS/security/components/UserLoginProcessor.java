@@ -47,7 +47,7 @@ public class UserLoginProcessor implements UserDetailsService {
 
         @Override
         public Collection<? extends GrantedAuthority> getAuthorities() {
-            return user.getRole().equals(Role.manager())?generateAuthorities("ROLE_ADMIN", "ROLE_USER"):generateAuthorities("ROLE_USER");
+            return user.getRole().equals(Role.manager())?generateAuthorities("ROLE_ADMIN"):generateAuthorities("ROLE_USER");
         }
 
         @Override

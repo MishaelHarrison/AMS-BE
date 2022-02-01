@@ -14,8 +14,6 @@ public class User {
 
     private String password;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.ALL)
     private Role role;
 }
-
-//(User Id, Password, Role)

@@ -21,8 +21,11 @@ public class Customer {
     private String email;
     private Date DOB;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    private User userData;
+
     @OneToMany
-    @JoinColumn(insertable = false, updatable = false)
+    @JoinColumn
     private List<Account> accounts;
 
 }

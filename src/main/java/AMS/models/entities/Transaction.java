@@ -30,6 +30,3 @@ public class Transaction {
         Cash, Transfer
     }
 }
-
-//(Transaction ID, Transaction reference number, Date Time,
-//Type (Debit/Credit), SubType (Cash/Transfer), Current Balance

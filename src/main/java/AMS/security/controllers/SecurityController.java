@@ -4,6 +4,7 @@ import AMS.security.components.JwtUtil;
 import AMS.security.models.LoginRequest;
 import AMS.security.models.LoginResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -39,11 +40,11 @@ public class SecurityController {
                     new UsernamePasswordAuthenticationToken(loginInfo.getUsername(), loginInfo.getPassword())
             );
         } catch (BadCredentialsException e){
-            throw new Exception("Incorrect username or password", e);
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(LoginResponse.withMessage("Incorrect username or password"));
         }
         UserDetails userDetails = userDetailsService.loadUserByUsername(loginInfo.getUsername());
         String jwt = jwtUtil.generateToken(userDetails);
 
-        return ResponseEntity.ok(new LoginResponse(jwt));
+        return ResponseEntity.ok(LoginResponse.withToken(jwt));
     }
 }
