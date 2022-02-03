@@ -1,6 +1,6 @@
 package AMS.controllers;
 
-import AMS.models.Dto.CustomerDtoOut;
+import AMS.models.Dto.CustomerOut;
 import AMS.models.Dto.InitialAccountCreation;
 import AMS.security.annotations.AdminFilter;
 import AMS.services.ManagerService;
@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 
 @RestController
+@CrossOrigin("*")
 @RequestMapping("manager/")
 public class ManagerController {
 
@@ -18,8 +19,8 @@ public class ManagerController {
 
     @AdminFilter
     @GetMapping("getPAN/{id}")
-    public ResponseEntity<CustomerDtoOut> getPan(@PathVariable Long id){
-        CustomerDtoOut ret = managerService.getPan(id);
+    public ResponseEntity<CustomerOut> getPan(@PathVariable Long id){
+        CustomerOut ret = managerService.getPan(id);
         if (ret!=null) return ResponseEntity.ok(ret);
         return ResponseEntity.notFound().build();
     }

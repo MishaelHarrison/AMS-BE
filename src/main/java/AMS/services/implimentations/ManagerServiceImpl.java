@@ -1,18 +1,19 @@
 package AMS.services.implimentations;
 
-import AMS.models.Dto.CustomerDtoOut;
+import AMS.models.Dto.CustomerOut;
 import AMS.models.Dto.InitialAccountCreation;
 import AMS.models.entities.Account;
 import AMS.models.entities.Customer;
 import AMS.models.entities.Role;
 import AMS.models.entities.User;
-import AMS.repos.AccountRepo;
 import AMS.repos.CustomerRepo;
 import AMS.services.ManagerService;
+import AMS.services.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Collections;
 
 @Service
@@ -22,8 +23,10 @@ public class ManagerServiceImpl implements ManagerService {
 
     @Autowired private PasswordEncoder encoder;
 
+    @Autowired private RoleService roleService;
+
     @Override
-    public CustomerDtoOut getPan(Long PAN) {
+    public CustomerOut getPan(Long PAN) {
         return DtoFromEnt(customerRepo.findByPAN(PAN).orElse(null));
     }
 
@@ -50,14 +53,14 @@ public class ManagerServiceImpl implements ManagerService {
         customer.setName(dto.getName());
         customer.setPAN(dto.getPAN());
         customer.setDOB(dto.getDOB());
-        user.setRole(Role.customer());
+        user.setRole(roleService.customer());
         customer.setUserData(user);
         return customer;
     }
 
-    private CustomerDtoOut DtoFromEnt(Customer ent){
+    private CustomerOut DtoFromEnt(Customer ent){
         if(ent==null) return null;
-        CustomerDtoOut ret = new CustomerDtoOut();
+        CustomerOut ret = new CustomerOut();
         ret.setUserId(ent.getUserData().getId());
         ret.setCitizenId(ent.getCitizenId());
         ret.setAddress(ent.getAddress());

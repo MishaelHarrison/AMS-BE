@@ -3,7 +3,7 @@ package AMS.models.Dto;
 import lombok.Data;
 
 @Data
-public class ManagerDtoOut {
+public class ManagerOut {
 
     private Long Id;
 

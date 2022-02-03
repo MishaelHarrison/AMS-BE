@@ -1,8 +1,7 @@
 package AMS;
 
-import AMS.models.Dto.CustomerDtoOut;
+import AMS.models.Dto.CustomerOut;
 import AMS.models.Dto.InitialAccountCreation;
-import AMS.models.entities.Account;
 import AMS.models.entities.Customer;
 import AMS.models.entities.Role;
 import AMS.models.entities.User;
@@ -13,7 +12,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -45,8 +43,6 @@ public class ManagerControllerTest {
     private UserRepo userRepo;
     @MockBean
     private CustomerRepo customerRepo;
-    @MockBean
-    private AccountRepo accountRepo;
 
     @Autowired
     private PasswordEncoder encoder;
@@ -63,7 +59,7 @@ public class ManagerControllerTest {
     void requestPANFoundTest(){
         User user = new User();
         user.setPassword(encoder.encode("pass"));
-        user.setRole(Role.customer());
+        user.setRole(libs.customer());
         user.setId(1L);
         Customer customer = new Customer();
         customer.setDOB(new Date(2020, Calendar.DECEMBER,25));
@@ -79,7 +75,7 @@ public class ManagerControllerTest {
 
         libs.loginAdmin();
 
-        CustomerDtoOut ret = requestPAN(1L).getBody();
+        CustomerOut ret = requestPAN(1L).getBody();
 
         Assertions.assertNotNull(ret);
         Assertions.assertAll(
@@ -100,7 +96,7 @@ public class ManagerControllerTest {
 
         libs.loginAdmin();
 
-        ResponseEntity<CustomerDtoOut> ret = requestPAN(2L);
+        ResponseEntity<CustomerOut> ret = requestPAN(2L);
 
         Assertions.assertEquals(HttpStatus.NOT_FOUND, ret.getStatusCode());
     }
@@ -151,7 +147,7 @@ public class ManagerControllerTest {
         return restTemplate.exchange(libs.endpoint("manager/newUser"), HttpMethod.POST, libs.getHeaders(input), Long.class);
     }
 
-    private ResponseEntity<CustomerDtoOut> requestPAN(Long id){
-        return restTemplate.exchange(libs.endpoint("manager/getPAN/{id}"), HttpMethod.GET, libs.getHeaders(), CustomerDtoOut.class, id);
+    private ResponseEntity<CustomerOut> requestPAN(Long id){
+        return restTemplate.exchange(libs.endpoint("manager/getPAN/{id}"), HttpMethod.GET, libs.getHeaders(), CustomerOut.class, id);
     }
 }

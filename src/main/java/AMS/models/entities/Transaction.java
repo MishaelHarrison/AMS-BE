@@ -1,15 +1,17 @@
 package AMS.models.entities;
 
-import lombok.Data;
+import lombok.*;
+import org.hibernate.Hibernate;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 public class Transaction {
 
     @Id
@@ -22,11 +24,32 @@ public class Transaction {
     private TransactionSubType subType;
     private double amount;
 
+    @ManyToOne
+    private Account account;
+
+    @PrePersist
+    private void preCreation(){
+        time = new Date();
+    }
+
     public enum TransactionType{
         Debit, Credit
     }
 
     public enum TransactionSubType{
         Cash, Transfer
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Transaction that = (Transaction) o;
+        return Id != null && Objects.equals(Id, that.Id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }

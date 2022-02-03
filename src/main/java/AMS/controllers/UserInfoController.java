@@ -1,27 +1,28 @@
 package AMS.controllers;
 
+import AMS.exceptions.MissingLoggedUserException;
+import AMS.models.Dto.CustomerExtendedInfo;
 import AMS.models.Dto.RoleResponse;
 import AMS.security.annotations.AdminOrUserFilter;
+import AMS.security.annotations.UserFilter;
 import AMS.services.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import springfox.documentation.builders.ResponseBuilder;
 
 import java.security.Principal;
 
 @RestController
+@CrossOrigin("*")
 @RequestMapping("/info")
 public class UserInfoController {
 
     @Autowired private UserInfoService service;
 
-    @ExceptionHandler(UsernameNotFoundException.class)
+    @ExceptionHandler(MissingLoggedUserException.class)
     public ResponseEntity<?> handleBadError(){
         return ResponseEntity.status(HttpStatus.CONFLICT).body("User data has been modified/removed since login");
     }
@@ -36,6 +37,12 @@ public class UserInfoController {
     @GetMapping("/self")
     public ResponseEntity<?> getOwnInfo(Principal user){
         return ResponseEntity.ok(service.getOwnInfo(Long.parseLong(user.getName())));
+    }
+
+    @UserFilter
+    @GetMapping("/self/extended")
+    public ResponseEntity<CustomerExtendedInfo> getExtendedInfo(Principal user){
+        return ResponseEntity.ok(service.getExtendedInfo(Long.parseLong(user.getName())));
     }
 
 }

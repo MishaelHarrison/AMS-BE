@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class CustomerDtoOut {
+public class CustomerOut {
 
     private String CitizenId;
     private String address;

@@ -1,7 +1,7 @@
 package AMS;
 
-import AMS.models.Dto.CustomerDtoOut;
-import AMS.models.Dto.ManagerDtoOut;
+import AMS.models.Dto.CustomerOut;
+import AMS.models.Dto.ManagerOut;
 import AMS.models.Dto.RoleResponse;
 import AMS.models.entities.Customer;
 import AMS.models.entities.Role;
@@ -54,7 +54,7 @@ class UserInfoTest {
 	void getCustomerInfoTest(){
 		User user = new User();
 		user.setPassword(encoder.encode("pass"));
-		user.setRole(Role.customer());
+		user.setRole(libs.customer());
 		user.setId(1L);
 		Customer customer = new Customer();
 		customer.setDOB(new Date(2020, Calendar.DECEMBER,25));
@@ -70,7 +70,7 @@ class UserInfoTest {
 
 		libs.loginUser();
 
-		CustomerDtoOut ret = requestInfoUser().getBody();
+		CustomerOut ret = requestInfoUser().getBody();
 
 		Assertions.assertNotNull(ret);
 		Assertions.assertAll(
@@ -89,7 +89,7 @@ class UserInfoTest {
 	void getManagerInfoTest(){
 		libs.loginAdmin();
 
-		ManagerDtoOut ret = requestInfoAdmin().getBody();
+		ManagerOut ret = requestInfoAdmin().getBody();
 
 		Assertions.assertNotNull(ret);
 		Assertions.assertEquals(2L, ret.getId());
@@ -119,12 +119,12 @@ class UserInfoTest {
 		return restTemplate.exchange(libs.endpoint("info/role"), HttpMethod.GET, libs.getHeaders(), RoleResponse.class);
 	}
 
-	private ResponseEntity<CustomerDtoOut> requestInfoUser(){
-		return restTemplate.exchange(libs.endpoint("info/self"), HttpMethod.GET, libs.getHeaders(), CustomerDtoOut.class);
+	private ResponseEntity<CustomerOut> requestInfoUser(){
+		return restTemplate.exchange(libs.endpoint("info/self"), HttpMethod.GET, libs.getHeaders(), CustomerOut.class);
 	}
 
-	private ResponseEntity<ManagerDtoOut> requestInfoAdmin(){
-		return restTemplate.exchange(libs.endpoint("info/self"), HttpMethod.GET, libs.getHeaders(), ManagerDtoOut.class);
+	private ResponseEntity<ManagerOut> requestInfoAdmin(){
+		return restTemplate.exchange(libs.endpoint("info/self"), HttpMethod.GET, libs.getHeaders(), ManagerOut.class);
 	}
 
 }

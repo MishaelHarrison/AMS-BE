@@ -32,15 +32,24 @@ public class AMSTestLibs {
         this.encoder = encoder;
     }
 
+    private Role getRole(String name){
+        Role role = new Role();
+        role.setName(name);
+        return role;
+    }
+
+    public Role customer(){return getRole("CUSTOMER");}
+    public Role manager(){return getRole("MANAGER");}
+
     public void setupBaseUsers(){
         User user = new User();
         user.setPassword(encoder.encode("pass"));
-        user.setRole(Role.customer());
+        user.setRole(customer());
         user.setId(1L);
         when(userRepo.findById(1L)).thenReturn(Optional.of(user));
         User admin = new User();
         admin.setPassword(encoder.encode("pass"));
-        admin.setRole(Role.manager());
+        admin.setRole(manager());
         admin.setId(2L);
         when(userRepo.findById(2L)).thenReturn(Optional.of(admin));
     }

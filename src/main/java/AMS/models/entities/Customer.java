@@ -1,13 +1,18 @@
 package AMS.models.entities;
 
-import lombok.Data;
+import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 public class Customer {
 
     @Id
@@ -24,8 +29,21 @@ public class Customer {
     @OneToOne(cascade = CascadeType.ALL)
     private User userData;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn
+    @ToString.Exclude
     private List<Account> accounts;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Customer customer = (Customer) o;
+        return Id != null && Objects.equals(Id, customer.Id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }
