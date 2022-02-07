@@ -30,7 +30,7 @@ public class Customer {
     private User userData;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn
+    @JoinColumn(name = "customerId")
     @ToString.Exclude
     private List<Account> accounts;
 

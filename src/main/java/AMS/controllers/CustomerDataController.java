@@ -39,9 +39,6 @@ public class CustomerDataController {
     @UserFilter
     @PostMapping("newAccount")
     public ResponseEntity<AccountOut> addAccount(@RequestBody MoneyRequest data, Principal user){
-        System.out.println("on controller");
-        ResponseEntity<AccountOut> output = ResponseEntity.ok(customerDataService.createAccount(data, Long.parseLong(user.getName())));
-        System.out.println(output);
-        return output;
+        return ResponseEntity.ok(customerDataService.createAccount(data, Long.parseLong(user.getName())));
     }
 }

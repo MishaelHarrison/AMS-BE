@@ -24,11 +24,11 @@ public class Account {
     private Date createdOn;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "Customer_Id", insertable = false, updatable = false)
+    @JoinColumn(name = "customerId", insertable = false, updatable = false)
     @ToString.Exclude
     private Customer customer;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn
     @ToString.Exclude
     private List<Transaction> transactions;

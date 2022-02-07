@@ -36,7 +36,6 @@ public class CustomerDataServiceImpl implements CustomerDataService {
 
     @Override
     public AccountOut createAccount(MoneyRequest data, long id) {
-        System.out.println("in service");
         return DtoFromEnt(customerRepo.save(mapUpdate(
                         customerRepo.findByUser(id).orElseThrow(MissingLoggedUserException::new), data))
                 .getAccounts().stream().min(Comparator.comparing(Account::getCreatedOn))
@@ -44,7 +43,6 @@ public class CustomerDataServiceImpl implements CustomerDataService {
     }
 
     private Customer mapUpdate(Customer data, MoneyRequest update){
-        System.out.println("in update mapper");
         Account account = new Account();
         account.setBalance(update.getAmount());
         data.getAccounts().add(account);
@@ -77,7 +75,6 @@ public class CustomerDataServiceImpl implements CustomerDataService {
     }
 
     private AccountOut DtoFromEnt(Account ent){
-        System.out.println("in entity mapper");
         AccountOut ret = new AccountOut();
         ret.setTransactions(new ArrayList<>());//todo: change to actual
         ret.setBalance(ent.getBalance());
